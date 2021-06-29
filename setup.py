@@ -6,10 +6,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pympcam",
-    version=pympcam.VERSION,
-    author="SIANA Systems",
-    author_email="support@siana-systems.com",
-    description="MPCam HW tools",
+    version=pympcam.__version__,
+    author=pympcam.__author__,
+    author_email=pympcam.__email__,
+    description="A Python library to manage Hardware on MPCam boards",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://bitbucket.org/sianasystems/mpcam-pympcam",
