@@ -1,8 +1,7 @@
 MPCam GPIO
 =============
 
-MPCam board has GPIO headers available for the user.
-They could be used as inputs, output, and some of them as PWM.
+The MPCam includes a GPIO header which can be used to access GPIOs and PWM.
 
 PyMPCam provides :py:meth:`pympcam.headerIo` to access all GPIOs, and
-:py:meth:`pympcam.headerPwm` for PWM enabled pins.
+:py:meth:`pympcam.headerPwm` to drive PWM signals.
