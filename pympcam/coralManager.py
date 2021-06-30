@@ -35,8 +35,18 @@ from time import sleep
 import logging
 
 class CoralManager:
+    """
+    Controls Coral (TPU) power state on MPCam board.
+
+    Sequences for the power up (USB) procedure are extracted from
+    `Coral Accelerator Module Datasheet <https://coral.ai/static/files/Coral-Accelerator-Module-datasheet.pdf>`_
+    """
+
+    #: Timeout for PGOOD4: Power OK signal, in seconds
     TIMEOUT_PGOOD_SEC = 0.002
+    #: Timeout for RST_L: System reset, in seconds
     TIMEOUT_RST_SEC = 0.01
+    #: Timeout for PWR_EN: Power enable input, in seconds
     TIMEOUT_PWR_EN_SEC = 0.01
     
     def __init__(self):
@@ -49,8 +59,6 @@ class CoralManager:
     def turnOn(self) -> bool:
         """
         Turns on internal Coral device in MPCam.
-        Power up sequence based on :
-        https://coral.ai/static/files/Coral-Accelerator-Module-datasheet.pdf
 
         :returns: PGOOD4 state, should be True to indicate proper turn on.
         """

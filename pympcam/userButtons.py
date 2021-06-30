@@ -34,6 +34,14 @@ from pympcam.commons import MpcamGpio
 import logging
 
 class UserButtons:
+    """
+    Controls User buttons on MPCam board.
+
+    Available buttons are:
+
+    - SW1
+    - SW2
+    """
     def __init__(self):
         self.log = logging.getLogger(__name__)
         self.SW1:GPIO = MpcamGpio(7, 9, "in").init() # PH9

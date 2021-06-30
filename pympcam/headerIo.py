@@ -34,6 +34,10 @@ from periphery import GPIO
 import logging
 
 class HeadersIo:
+    """
+    Controls Headers Input/Output on MPCam board.
+    """
+
     GPIO1_IS_PWM = True
 
     def __init__(self):
@@ -58,7 +62,7 @@ class HeadersIo:
 
     def set(self, label:str, value:bool=None) -> int:
         """
-        Sets (toggles) GPIO current state. If value is provided,
+        Sets (or toggles) GPIO current state. If value is provided,
         is set as current.
         
         :param label: Header DIO to get (do0, do1, do2, do3).

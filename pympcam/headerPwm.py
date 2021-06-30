@@ -33,6 +33,14 @@ from periphery import PWM
 import logging
 
 class HeaderPwm:
+    """
+    Controls Headers PWM on MPCam board.
+
+    Available PWM:
+
+    - PWM1
+    - PWM2
+    """
     def __init__(self):
         self.log = logging.getLogger(__name__)
         self.PWM1 = PWM(0, 1) # PA5
@@ -41,8 +49,6 @@ class HeaderPwm:
     def set(self, label:str, duty_cycle=.5, frequency=1):
         """
         Sets specified PWM to start.
-        Warning: Duty cycle and frequency paramaters should 
-        make sense with timer.
 
         :warning: Some combinations of duty_cycle and frequency may cause errors.
 

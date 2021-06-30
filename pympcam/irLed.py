@@ -33,9 +33,12 @@ from pympcam.commons import MpcamGpio
 import logging
 
 class IrLed:
-    irx = MpcamGpio(5, 2, "out").init() # PF2
+    """
+    Controls Infrared (IR) LEDs on MPCam board.
+    """
     
     def __init__(self):
+        self.irx = MpcamGpio(5, 2, "out").init() # PF2
         self.log = logging.getLogger(__name__)
 
     def turnOn(self) -> None:
