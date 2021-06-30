@@ -1,6 +1,6 @@
 MPCam Buttons
 =============
-MPCam board has two buttons available to the user: SW1 and SW2.
+MPCam board has two buttons available: SW1 and SW2.
 
 PyMPCam provides :py:meth:`pympcam.userButtons` to access the buttons.
 
@@ -19,7 +19,7 @@ The following example shows how to poll button state::
     if bt.getState("sw2"):
     print("Button#2 pressed!")
 
-If a blocking behaviour is needed (with a timeout), GPIO instance is provided::
+If a blocking behaviour is preferred (with a timeout)::
 
     from pympcam.userButtons import UserButtons
     btn = UserButtons()
