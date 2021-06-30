@@ -1,14 +1,13 @@
 MPCam LEDs
 ==========
-MPCam board has two user LEDs available to the user: LED1 (blue) and LED2 (red).
-There is also two Infrared (IR) LEDs available for the user.
+The MPCam provides two user LEDs: LED1 (blue) and LED2 (red), and IR LEDs.
 
-PyMPCam provides :py:meth:`pympcam.userLed` to access the user LEDs, and
-:py:meth:`pympcam.irLed` to access IR LEDs.
+PyMPCam provides :py:meth:`pympcam.userLed` to control the user LEDs, and
+:py:meth:`pympcam.irLed` to control the IR LEDs.
 
 Examples
 --------
-The following example shows how to turn on/off user LEDs::
+The following example shows how to turn on/off the user LEDs::
 
     from pympcam.userLed import UserLed
     led = userLed()
@@ -21,7 +20,7 @@ The following example shows how to turn on/off user LEDs::
     led.turnOff("LED1") # blue
     led.turnOff("LED2") # red
 
-The following example shows how to turn on/off IR LEDs::
+The following example shows how to turn on/off the IR LEDs::
 
     from pympcam.irLed import IrLed
     ir = IrLed()
