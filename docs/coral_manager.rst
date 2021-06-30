@@ -1,7 +1,7 @@
 Coral Manager
 =============
 
-MPCam board has a `Coral Accelerator Module <https://coral.ai/products/accelerator-module>`_ available to the user.
+MPCam comes with a `Coral Accelerator Module <https://coral.ai/products/accelerator-module>`_.
 
 PyMPCam provides :py:meth:`pympcam.coralManager` to turn on or off the module.
 
