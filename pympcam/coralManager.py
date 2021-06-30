@@ -1,3 +1,33 @@
+##
+# @file       coralManager.py
+# @author     SIANA Systems
+# @date       06/17/2021
+# @copyright  The MIT License (MIT)
+# @brief      PyMPCam Coral functions.
+#
+# -----------------------------------------------------------------------------
+# MIT License
+# 
+# Copyright (c) 2021 SIANA Systems
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# -----------------------------------------------------------------------------
 
 from pympcam.commons import MpcamGpio
 
@@ -5,8 +35,18 @@ from time import sleep
 import logging
 
 class CoralManager:
+    """
+    Controls Coral (TPU) power state on MPCam board.
+
+    Sequences for the power up (USB) procedure are extracted from
+    `Coral Accelerator Module Datasheet <https://coral.ai/static/files/Coral-Accelerator-Module-datasheet.pdf>`_
+    """
+
+    #: Timeout for PGOOD4: Power OK signal, in seconds
     TIMEOUT_PGOOD_SEC = 0.002
+    #: Timeout for RST_L: System reset, in seconds
     TIMEOUT_RST_SEC = 0.01
+    #: Timeout for PWR_EN: Power enable input, in seconds
     TIMEOUT_PWR_EN_SEC = 0.01
     
     def __init__(self):
@@ -19,8 +59,6 @@ class CoralManager:
     def turnOn(self) -> bool:
         """
         Turns on internal Coral device in MPCam.
-        Power up sequence based on :
-        https://coral.ai/static/files/Coral-Accelerator-Module-datasheet.pdf
 
         :returns: PGOOD4 state, should be True to indicate proper turn on.
         """

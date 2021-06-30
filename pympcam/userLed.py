@@ -1,34 +1,75 @@
+##
+# @file       userLed.py
+# @author     SIANA Systems
+# @date       06/17/2021
+# @copyright  The MIT License (MIT)
+# @brief      PyMPCam User LED functions.
+#
+# -----------------------------------------------------------------------------
+# MIT License
+# 
+# Copyright (c) 2021 SIANA Systems
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# -----------------------------------------------------------------------------
+
 from pympcam.commons import MpcamGpio
 import logging
 
 class UserLed:
+    """
+    Controls User LEDs on MPCam board.
+
+    Avaible LEDs:
+
+    - LED1: Blue
+    - LED2: Red
+    """
+    #: GPIO instance of LED1, Blue.
     LED1 = MpcamGpio(9, 2, "out") # PZ2, blue
+    #: GPIO instance of LED2, Red.
     LED2 = MpcamGpio(7, 13, "out") # PH13, yellow
-    LED1_SYSFS = "heartbeat"
-    LED2_SYSFS = "error"
-    LED_SYSFS = "/sys/class/leds/{}/brightness"
+    _LED1_SYSFS = "heartbeat"
+    _LED2_SYSFS = "error"
+    _LED_SYSFS = "/sys/class/leds/{}/brightness"
     
     def __init__(self):
         """
         Init function will try to use periphery to access LED GPIO.
-        If it fails (it should, LED are in use by the kernel as for v99.13) it
+        If it fails (it should, LED are in use by the kernel as for v1.0) it
         will use SYSFS path to interact with the LED.
         """
         self.log = logging.getLogger(__name__)
         try:
             self.LED1.init()
         except:
-            self.LED1 = self.LED_SYSFS.format(self.LED1_SYSFS)
+            self.LED1 = self._LED_SYSFS.format(self._LED1_SYSFS)
         try:
             self.LED2.init()
         except:
-            self.LED2 = self.LED_SYSFS.format(self.LED2_SYSFS)
+            self.LED2 = self._LED_SYSFS.format(self._LED2_SYSFS)
 
     def turnOn(self, label:str=None) -> None:
         """
         Turns on user LEDs.
 
-        :param label: LED to be turn on (led1, led2) or empty for all.
+        :param label: LED to be turn on (LED1, LED2) or empty for all.
         """
         for led in self._get_leds(label):
             if type(led) == str:
@@ -42,7 +83,7 @@ class UserLed:
         """
         Turns off user LEDs.
 
-        :param label: LED to be turn off (led1, led2) or empty for all.
+        :param label: LED to be turn off (LED1, LED2) or empty for all.
         """
         for led in self._get_leds(label):
             if type(led) == str:
@@ -55,7 +96,7 @@ class UserLed:
         """
         Gets current state of a user LED.
         
-        :param label: LED to get state (led1, led2).
+        :param label: LED to get state (LED1, LED2).
         :returns: True if LED is on.
         """
         led = self._get_led(label)
