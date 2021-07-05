@@ -29,9 +29,13 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
-from periphery.gpio import GPIO
-from pympcam.commons import MpcamGpio
+from pympcam.commons import MpcamGpio, isMPCamBoard
 import logging
+
+if isMPCamBoard():
+    from periphery import GPIO
+else:
+    from pympcam.fakePeriphery import GPIO
 
 class UserButtons:
     """

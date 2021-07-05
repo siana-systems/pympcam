@@ -41,10 +41,6 @@ class UserLed:
     - LED1: Blue
     - LED2: Red
     """
-    #: GPIO instance of LED1, Blue.
-    LED1 = MpcamGpio(9, 2, "out") # PZ2, blue
-    #: GPIO instance of LED2, Red.
-    LED2 = MpcamGpio(7, 13, "out") # PH13, yellow
     _LED1_SYSFS = "heartbeat"
     _LED2_SYSFS = "error"
     _LED_SYSFS = "/sys/class/leds/{}/brightness"
@@ -57,12 +53,16 @@ class UserLed:
         """
         self.log = logging.getLogger(__name__)
         try:
-            self.LED1.init()
+            #: GPIO instance of LED1, Blue.
+            self.LED1 = MpcamGpio(9, 2, "out").init() # PZ2, blue
         except:
+            self.log.info("Using sysfs for LED1")
             self.LED1 = self._LED_SYSFS.format(self._LED1_SYSFS)
         try:
-            self.LED2.init()
+            #: GPIO instance of LED2, Red.
+            self.LED2 = MpcamGpio(7, 13, "out").init() # PH13, yellow
         except:
+            self.log.info("Using sysfs for LED2")
             self.LED2 = self._LED_SYSFS.format(self._LED2_SYSFS)
 
     def turnOn(self, label:str=None) -> None:

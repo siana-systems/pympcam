@@ -29,8 +29,30 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
-from periphery import GPIO
+import platform
+from subprocess import check_output
 from dataclasses import dataclass
+
+def isMPCamBoard() -> bool:
+    """
+    Detects if library is running on MPCam board.
+    
+    :return: True if Running on MPCam board.
+    """
+    if 'Linux' == platform.system():
+        try:
+            if 'mpcam' == check_output(['lsb_release', '-i']).decode().replace("Distributor ID:\t", "").strip():
+                return True
+        except Exception as e:
+            raise e
+    return False
+
+# Periphery import
+if isMPCamBoard():
+    from periphery import GPIO
+else:
+    from pympcam.fakePeriphery import GPIO
+    
 
 @dataclass
 class MpcamGpio:
