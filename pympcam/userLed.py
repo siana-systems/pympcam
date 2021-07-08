@@ -30,6 +30,7 @@
 # -----------------------------------------------------------------------------
 
 from pympcam.commons import MpcamGpio
+from os import path
 import logging
 
 class UserLed:
@@ -106,6 +107,23 @@ class UserLed:
         else:
             return led.read()
 
+    def enableHeartbeat(self) -> bool:
+        """
+        Enable heartbeat trigger for user LED1.
+
+        :returns: True if enabled.
+        """
+        return self._set_led_trigger(self._get_led("led1"), "heartbeat")
+
+    def disableHeartbeat(self) -> bool:
+        """
+        Disable heartbeat trigger for user LED1.
+        
+        :returns: True if disabled.
+        """
+        return self._set_led_trigger(self._get_led("led1"), "none")
+        
+
     def _get_leds(self, label:str) -> list:
         if label == None:
             return [self.LED1, self.LED2]
@@ -123,3 +141,16 @@ class UserLed:
             return self.LED2
         else:
             raise Exception("Unkown user LED label: {}".format(label))
+
+    def _set_led_trigger(self, led:str, trigger:str):
+        if path.exists(led):
+            try:
+                with open(led.replace('brightness', 'trigger'), 'w') as f:
+                    f.write(trigger)
+                return True
+            except Exception as e:
+                self.log.warning(f"Error setting trigger {trigger} for {led}: \n{str(e)}")
+                raise e
+        else:
+            raise Exception("LED is not in SYSFS")
+        

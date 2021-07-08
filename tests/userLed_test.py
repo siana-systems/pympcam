@@ -57,3 +57,7 @@ class TestUserLedMethods(unittest.TestCase):
     def test_onLedx(self):
         with self.assertRaises(Exception):
             self.led.turnOn("ledx")
+
+    def test_disableHeartbeat(self):
+        self.led.disableHeartbeat()
+        self.assertFalse(self.led.getState("led1"))
