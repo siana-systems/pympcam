@@ -30,7 +30,7 @@
 # -----------------------------------------------------------------------------
 
 import subprocess
-from pympcam.commons import isMPCamBoard
+from .commons import isMPCamBoard
 
 import logging
 from enum import Enum
