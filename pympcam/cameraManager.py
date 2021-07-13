@@ -79,25 +79,7 @@ class CameraManager:
         ret = subprocess.check_output(['v4l2-ctl','--get-ctrl',param]).decode().strip().split(':')
         return ret[0], ret[1]
 
-    def flip_horizontal(self, enable: bool):
-        """Flips the image around the horizontal.
-
-            Args:
-                enable: True if image should be flipped.
-        """
-        if self.is_mpcamHost:
-            self.log.info("camera flip horizontal = {}".format(enable))
-            CameraManager.set_param('horizontal_flip', 1 if enable else 0)
-
-    def flip_vertical(self, enable: bool):
-        """Flips the image around the vertical.
-
-            Args:
-                enable: True if image should be flipped.
-        """
-        if self.is_mpcamHost:
-            self.log.info("camera flip vertical = {}".format(enable))
-            CameraManager.set_param('vertical_flip', 1 if enable else 0)
+#--: GAIN :--------------------------------------------------------------------            
 
     def set_autoGain(self, enable: bool):
         """Enable/Disable the camera auto-gain.
@@ -139,6 +121,8 @@ class CameraManager:
         else:
             return None       
 
+#--:EXPOSURE :-----------------------------------------------------------------
+
     def set_autoExposure(self, mode: ExposureMode):
         """Sets the camera auto-exposure mode.
 
@@ -178,6 +162,89 @@ class CameraManager:
             return int(val) if param == 'exposure' else None 
         else:
             None
+
+#--: WHITE-BALANCE :-----------------------------------------------------------
+
+    def set_autoWhiteBalance(self, enable: bool):
+        """Enable/Disable the camera auto-white-balance.
+
+            Args:
+                enable: True to enable auto-wb. False to disable it.
+        """
+        if self.is_mpcamHost:
+            self.log.info("camera auto-white-balance = {}".format(enable))
+            CameraManager.set_param('white_balance_automatic', 1 if enable else 0)
+
+    def get_autoWhiteBalance(self) -> bool:
+        """Returns the camera auto-white-balance setting.
+
+            Returns: True if auto-white-balance is set, or False if not.
+        """
+        if self.is_mpcamHost:
+            param, val = CameraManager.get_param('white_balance_automatic')
+            return bool(int(val)) if param == 'white_balance_automatic' else None
+        else:
+            return None
+
+    def set_redBalanceLevel(self, level: int):
+        """Sets the camera red-balance level when auto-WB is disabled.
+        
+            Args:
+                level: red-balance value between 0..4095
+        """
+        if self.is_mpcamHost:
+            if level < 0 or level > 4095: raise ValueError
+            self.log.info("camera red-balance level = {}".format(level))            
+            CameraManager.set_param('red_balance', level)
+
+    def get_redBalanceLevel(self) -> int:
+        """Returns the camera red-balance level."""
+        if self.is_mpcamHost:
+            param, val = CameraManager.get_param('red_balance')
+            return int(val) if param == 'red_balance' else None    
+        else:
+            return None             
+
+    def set_blueBalanceLevel(self, level: int):
+        """Sets the camera blue-balance level when auto-WB is disabled.
+        
+            Args:
+                level: blue-balance value between 0..4095
+        """
+        if self.is_mpcamHost:
+            if level < 0 or level > 4095: raise ValueError
+            self.log.info("camera blue-balance level = {}".format(level))            
+            CameraManager.set_param('blue_balance', level)
+
+    def get_blueBalanceLevel(self) -> int:
+        """Returns the camera blue-balance level."""
+        if self.is_mpcamHost:
+            param, val = CameraManager.get_param('blue_balance')
+            return int(val) if param == 'blue_balance' else None    
+        else:
+            return None
+
+#--: MISC :--------------------------------------------------------------------
+
+    def flip_horizontal(self, enable: bool):
+        """Flips the image around the horizontal.
+
+            Args:
+                enable: True if image should be flipped.
+        """
+        if self.is_mpcamHost:
+            self.log.info("camera flip horizontal = {}".format(enable))
+            CameraManager.set_param('horizontal_flip', 1 if enable else 0)
+
+    def flip_vertical(self, enable: bool):
+        """Flips the image around the vertical.
+
+            Args:
+                enable: True if image should be flipped.
+        """
+        if self.is_mpcamHost:
+            self.log.info("camera flip vertical = {}".format(enable))
+            CameraManager.set_param('vertical_flip', 1 if enable else 0)
 
     def set_powerLineFreq(self, freq: LineFreq):
         """Sets the camera power-line frequency.

@@ -9,11 +9,7 @@ class TestCoralManagerMethods(unittest.TestCase):
         self.camera = CameraManager()
         return super().setUp()
 
-    def teadDown(self) -> None:
-        # restore camera settings
-        self.camera.set_autogain(True)
-        self.camera.set_autoExposure(ExposureMode.AUTO)
-        return super().tearDown()
+#--: GAIN :--------------------------------------------------------------------  
 
     def test_toggleAutoGain(self):
         # read auto-gain
@@ -38,6 +34,8 @@ class TestCoralManagerMethods(unittest.TestCase):
         # validate...
         self.assertEqual(test_gain, set_gain)        
 
+#--:EXPOSURE :-----------------------------------------------------------------
+
     def test_toggleAutoExposure(self):
         # read auto-exposure
         autoExposure = self.camera.get_autoExposure()
@@ -60,3 +58,39 @@ class TestCoralManagerMethods(unittest.TestCase):
         test_exposure = self.camera.get_exposureLevel()
         # validate...
         self.assertEqual(test_exposure, set_exposure) 
+
+#--: WHITE-BALANCE :-----------------------------------------------------------
+
+    def test_toggleAutoWhiteBalance(self):
+        # read auto-WB
+        autoWB = self.camera.get_autoWhiteBalance()
+        # toggle auto-WB
+        test_autoWB = False if autoWB else True
+        # set new auto-WB
+        self.camera.set_autoWhiteBalance( test_autoWB )
+        # read it back...
+        toggled_autoWB = self.camera.get_autoWhiteBalance()
+        # validate...
+        self.assertNotEqual(autoWB, toggled_autoWB)
+
+    def test_withSetRedLevel_shouldGetSameRedLevel(self):
+        # disable auto-WB
+        self.camera.set_autoWhiteBalance(False)
+        # set test red level
+        set_red = random.randint(0,4095)
+        self.camera.set_redBalanceLevel( set_red )
+        # read it back...
+        test_red = self.camera.get_redBalanceLevel()
+        # validate...
+        self.assertEqual(test_red, set_red) 
+
+    def test_withSetBlueLevel_shouldGetSameBlueLevel(self):
+        # disable auto-WB
+        self.camera.set_autoWhiteBalance(False)
+        # set test blue level
+        set_blue = random.randint(0,4095)
+        self.camera.set_blueBalanceLevel( set_blue )
+        # read it back...
+        test_blue = self.camera.get_blueBalanceLevel()
+        # validate...
+        self.assertEqual(test_blue, set_blue) 
