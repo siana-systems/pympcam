@@ -117,6 +117,8 @@ class CameraManager:
         if self.is_mpcamHost:
             param, val = CameraManager.get_param('gain_automatic')
             return bool(int(val)) if param == 'gain_automatic' else None
+        else:
+            return None
 
     def set_gainLevel(self, level: int):
         """Sets the camera gain level when auto-gain is disabled.
@@ -133,7 +135,9 @@ class CameraManager:
         """Returns the camera gain level."""
         if self.is_mpcamHost:
             param, val = CameraManager.get_param('gain')
-            return int(val) if param == 'gain' else None           
+            return int(val) if param == 'gain' else None    
+        else:
+            return None       
 
     def set_autoExposure(self, mode: ExposureMode):
         """Sets the camera auto-exposure mode.
@@ -153,6 +157,8 @@ class CameraManager:
         if self.is_mpcamHost:
             param, val = CameraManager.get_param('auto_exposure')
             return ExposureMode(int(val)) if param == 'auto_exposure' else None
+        else:
+            return None
 
     def set_exposureLevel(self, level: int):
         """Sets the camera exposure level when auto-exposure is set to MANUAL.
@@ -170,6 +176,8 @@ class CameraManager:
         if self.is_mpcamHost:
             param, val = CameraManager.get_param('exposure')
             return int(val) if param == 'exposure' else None 
+        else:
+            None
 
     def set_powerLineFreq(self, freq: LineFreq):
         """Sets the camera power-line frequency.
