@@ -30,6 +30,7 @@
 # -----------------------------------------------------------------------------
 
 from pympcam.commons import MpcamGpio
+from os import path
 import logging
 
 class UserLed:
@@ -41,10 +42,6 @@ class UserLed:
     - LED1: Blue
     - LED2: Red
     """
-    #: GPIO instance of LED1, Blue.
-    LED1 = MpcamGpio(9, 2, "out") # PZ2, blue
-    #: GPIO instance of LED2, Red.
-    LED2 = MpcamGpio(7, 13, "out") # PH13, yellow
     _LED1_SYSFS = "heartbeat"
     _LED2_SYSFS = "error"
     _LED_SYSFS = "/sys/class/leds/{}/brightness"
@@ -57,12 +54,16 @@ class UserLed:
         """
         self.log = logging.getLogger(__name__)
         try:
-            self.LED1.init()
+            #: GPIO instance of LED1, Blue.
+            self.LED1 = MpcamGpio(9, 2, "out").init() # PZ2, blue
         except:
+            self.log.info("Using sysfs for LED1")
             self.LED1 = self._LED_SYSFS.format(self._LED1_SYSFS)
         try:
-            self.LED2.init()
+            #: GPIO instance of LED2, Red.
+            self.LED2 = MpcamGpio(7, 13, "out").init() # PH13, yellow
         except:
+            self.log.info("Using sysfs for LED2")
             self.LED2 = self._LED_SYSFS.format(self._LED2_SYSFS)
 
     def turnOn(self, label:str=None) -> None:
@@ -106,6 +107,23 @@ class UserLed:
         else:
             return led.read()
 
+    def enableHeartbeat(self) -> bool:
+        """
+        Enable heartbeat trigger for user LED1.
+
+        :returns: True if enabled.
+        """
+        return self._set_led_trigger(self._get_led("led1"), "heartbeat")
+
+    def disableHeartbeat(self) -> bool:
+        """
+        Disable heartbeat trigger for user LED1.
+        
+        :returns: True if disabled.
+        """
+        return self._set_led_trigger(self._get_led("led1"), "none")
+        
+
     def _get_leds(self, label:str) -> list:
         if label == None:
             return [self.LED1, self.LED2]
@@ -123,3 +141,16 @@ class UserLed:
             return self.LED2
         else:
             raise Exception("Unkown user LED label: {}".format(label))
+
+    def _set_led_trigger(self, led:str, trigger:str):
+        if path.exists(led):
+            try:
+                with open(led.replace('brightness', 'trigger'), 'w') as f:
+                    f.write(trigger)
+                return True
+            except Exception as e:
+                self.log.warning(f"Error setting trigger {trigger} for {led}: \n{str(e)}")
+                raise e
+        else:
+            raise Exception("LED is not in SYSFS")
+        

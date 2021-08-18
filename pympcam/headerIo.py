@@ -30,7 +30,6 @@
 # -----------------------------------------------------------------------------
 
 from pympcam.commons import MpcamGpio
-from periphery import GPIO
 import logging
 
 class HeadersIo:
@@ -42,11 +41,11 @@ class HeadersIo:
 
     def __init__(self):
         self.log = logging.getLogger(__name__)
-        self.GPIO0:GPIO = MpcamGpio(3, 9, "out").init() # PD9
+        self.GPIO0 = MpcamGpio(3, 9, "out").init() # PD9
         if not self.GPIO1_IS_PWM:
             self.GPIO1 = MpcamGpio(3, 14, "out").init() # PD14
-        self.GPIO2:GPIO = MpcamGpio(9, 6, "out").init() # PZ6
-        self.GPIO3:GPIO = MpcamGpio(9, 7, "out").init() # PZ7
+        self.GPIO2 = MpcamGpio(9, 6, "out").init() # PZ6
+        self.GPIO3 = MpcamGpio(9, 7, "out").init() # PZ7
 
     def get(self, label:str) -> int:
         """
@@ -78,7 +77,7 @@ class HeadersIo:
         self.log.debug(f"{label} value is {state}")
         return int(state)
 
-    def _get_dio(self, label:str) -> GPIO:
+    def _get_dio(self, label:str):
         if label.lower() == "do0":
             return self.GPIO0
         elif (label.lower() == "do1") and (not self.GPIO1_IS_PWM):

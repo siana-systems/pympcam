@@ -29,8 +29,13 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
-from periphery import PWM
+from pympcam.commons import isMPCamBoard
 import logging
+
+if isMPCamBoard():
+    from periphery import PWM
+else:
+    from pympcam.fakePeriphery import PWM
 
 class HeaderPwm:
     """
@@ -46,9 +51,9 @@ class HeaderPwm:
         self.PWM1 = PWM(0, 1) # PA5
         self.PWM2 = PWM(4, 3) # PD14
 
-    def set(self, label:str, duty_cycle=.5, frequency=1):
+    def enable(self, label:str, duty_cycle=.5, frequency=1):
         """
-        Sets specified PWM to start.
+        Enables (opens) specified PWM.
 
         :warning: Some combinations of duty_cycle and frequency may cause errors.
 
@@ -71,9 +76,9 @@ class HeaderPwm:
         pwm = self._get_pwm(label)
         return pwm.duty_cycle, pwm.frequency
 
-    def close(self, label:str):
+    def disable(self, label:str):
         """
-        Closes a PWM device.
+        Disables (closes) a PWM device.
 
         :param label: PWM to be closed (pwm1, pwm2).
         """
