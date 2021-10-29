@@ -1,6 +1,12 @@
 API Reference
 =============
 
+cameraManager
+------------
+.. automodule:: pympcam.cameraManager
+    :members:
+    :undoc-members:
+
 commons
 -------
 .. automodule:: pympcam.commons

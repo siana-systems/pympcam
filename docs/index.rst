@@ -5,7 +5,8 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-
+   
+   camera_manager
    coral_manager
    gpio
    leds
