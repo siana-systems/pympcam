@@ -1,6 +1,6 @@
 MPCam Buttons
 =============
-MPCam board has two buttons available: SW1 and SW2.
+The MPCam has two user buttons available: SW1 and SW2.
 
 PyMPCam provides :py:meth:`pympcam.userButtons` to access the buttons.
 
